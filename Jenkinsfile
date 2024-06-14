@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git 'https://github.com/Enestar-28/Backend_Twitter.git'
+                git 'https://github.com/Enestar-28/App-Ecommerce.git'
             }
         }
 
