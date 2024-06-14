@@ -1,10 +1,18 @@
 pipeline {
     agent any
-
     stages {
-        stage('Clone') {
+        stage('Check Docker') {
             steps {
-                git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/Enestar-28/App-Ecommerce.git'
+                sh 'docker --version'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    def imageName = "myapp"
+                    def imageTag = "v1.0"
+                    sh "docker build -t ${imageName}:${imageTag} ."
+                }
             }
         }
     }
