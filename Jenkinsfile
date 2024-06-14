@@ -4,14 +4,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                script {
-                    try {
-                        git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/Enestar-28/Backend_Twitter.git'
-                    } catch (Exception e) {
-                        echo "Failed to clone repository: ${e.message}"
-                        currentBuild.result = 'FAILURE'
-                        error e
-                    }
+                git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/Enestar-28/Backend_Twitter.git'
                 }
             }
         }
