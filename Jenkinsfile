@@ -1,13 +1,28 @@
+
+
 pipeline {
     agent any
 
     stages {
+        stage('Check Docker') {
+            steps {
+                bat 'docker --version'
+            }
+        }
+
         stage('Clone') {
             steps {
-                git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/Enestar-28/Base-react-native.git'
+                script {
+                    try {
+                        git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/Enestar-28/Base-react-native.git'
+                    } catch (Exception e) {
+                        echo "Failed to clone repository: ${e.message}"
+                        currentBuild.result = 'FAILURE'
+                        error e
+                    }
                 }
             }
-
+        }
 
         stage('Build Docker Image') {
             steps {
@@ -15,7 +30,7 @@ pipeline {
                     try {
                         def imageName = "myapp"
                         def imageTag = "v1.0"
-                        sh "docker build -t ${imageName}:${imageTag} ."
+                        bat "docker build -t ${imageName}:${imageTag} ."
                     } catch (Exception e) {
                         echo "Failed to build Docker image: ${e.message}"
                         currentBuild.result = 'FAILURE'
