@@ -72,18 +72,4 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            cleanWs()
-        }
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
-            mail to: 'team@example.com',
-                 subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-                 body: "Something went wrong with the pipeline.\n\n${env.BUILD_URL}"
-        }
-    }
 }
