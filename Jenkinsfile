@@ -7,7 +7,7 @@ pipeline {
                 git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/Enestar-28/Backend_Twitter.git'
                 }
             }
-        }
+
 
         stage('Build Docker Image') {
             steps {
