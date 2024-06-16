@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_USERNAME = "enestars"
-        DOCKERHUB_PASSWORD = "nguyen123"
+        DOCKERHUB_USERNAME = credentials('docker-hub-credentials-id').username
+        DOCKERHUB_PASSWORD = credentials('docker-hub-credentials-id').password
         IMAGE_NAME = "nguyendeptrai"
         IMAGE_TAG = "v1.0"
         DOCKERHUB_REPO = "${DOCKERHUB_USERNAME}/${IMAGE_NAME}"
@@ -56,6 +56,8 @@ pipeline {
             }
         }
 
+        
+
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
@@ -74,6 +76,19 @@ pipeline {
                         echo "Failed to push Docker image to Docker Hub: ${e.message}"
                         currentBuild.result = 'FAILURE'
                         error "Stopping pipeline because the Docker image push failed."
+                    }
+                }
+            }
+        }
+        stage('Remove Local Docker Image') {
+            steps {
+                script {
+                    try {
+                        echo "Removing local Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
+                        bat "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+                    } catch (Exception e) {
+                        echo "Failed to remove local Docker image: ${e.message}"
+                        // Continue even if the removal fails; it's not critical to stop the pipeline
                     }
                 }
             }
