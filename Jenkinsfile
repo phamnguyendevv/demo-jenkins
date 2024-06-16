@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_USERNAME = credentials('docker-hub-credentials-id').username
-        DOCKERHUB_PASSWORD = credentials('docker-hub-credentials-id').password
+        DOCKERHUB_USERNAME = "enestars"
+        DOCKERHUB_PASSWORD = "nguyen123"
         IMAGE_NAME = "nguyendeptrai"
         IMAGE_TAG = "v1.0"
         DOCKERHUB_REPO = "${DOCKERHUB_USERNAME}/${IMAGE_NAME}"
@@ -55,8 +55,6 @@ pipeline {
                 }
             }
         }
-
-        
 
         stage('Push Docker Image to Docker Hub') {
             steps {
