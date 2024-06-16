@@ -7,6 +7,7 @@ pipeline {
                 script {
                     try {
                         bat 'docker --version'
+                        bat 'docker info'
                     } catch (Exception e) {
                         echo "Docker is not installed or not running: ${e.message}"
                         currentBuild.result = 'FAILURE'
@@ -20,7 +21,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/Enestar-28/Base-react-native.git'
+                        git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/Enestar-28/demo-jenkins.git'
                     } catch (Exception e) {
                         echo "Failed to clone repository: ${e.message}"
                         currentBuild.result = 'FAILURE'
@@ -36,7 +37,9 @@ pipeline {
                     try {
                         def imageName = "myapp"
                         def imageTag = "v1.0"
-                        echo "docker build .................."
+                        echo "Building Docker image..."
+                        // Change directory to where the Dockerfile is located
+                        bat 'cd /d C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\demo-pipeline'
                         bat "docker build -t ${imageName}:${imageTag} ."
                     } catch (Exception e) {
                         echo "Failed to build Docker image: ${e.message}"
