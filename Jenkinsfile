@@ -83,7 +83,7 @@ pipeline {
                 script {
                     try {
                         echo "Removing local Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
-                        bat "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+                        bat "docker rmi ${DOCKERHUB_USERNAME}/{IMAGE_NAME}:${IMAGE_TAG}"
                     } catch (Exception e) {
                         echo "Failed to remove local Docker image: ${e.message}"
                         // Continue even if the removal fails; it's not critical to stop the pipeline
