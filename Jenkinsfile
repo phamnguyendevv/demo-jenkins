@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        def imageName = "AppDemoNguyen"
+                        def imageName = "nguyendeptrai"
                         def imageTag = "v1.0"
                         echo "Building Docker image..."
                         // Change directory to where the Dockerfile is located
