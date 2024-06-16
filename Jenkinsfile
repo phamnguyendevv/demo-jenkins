@@ -37,7 +37,7 @@ pipeline {
                         def imageName = "myapp"
                         def imageTag = "v1.0"
                         echo "docker build ................."
-                        bat "docker build -t ${imageName}:${imageTag} ."
+                        bat 'runas /user:Administrator "docker build -t ${imageName}:${imageTag} ."'
                     } catch (Exception e) {
                         echo "Failed to build Docker image: ${e.message}"
                         currentBuild.result = 'FAILURE'
