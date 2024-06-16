@@ -1,12 +1,18 @@
-
-
 pipeline {
     agent any
 
     stages {
         stage('Check Docker') {
             steps {
-                bat 'docker --version'
+                script {
+                    try {
+                        bat 'docker --version'
+                    } catch (Exception e) {
+                        echo "Docker is not installed or not running: ${e.message}"
+                        currentBuild.result = 'FAILURE'
+                        error "Stopping pipeline because Docker is not available."
+                    }
+                }
             }
         }
 
@@ -18,7 +24,7 @@ pipeline {
                     } catch (Exception e) {
                         echo "Failed to clone repository: ${e.message}"
                         currentBuild.result = 'FAILURE'
-                        error e
+                        error "Stopping pipeline because the repository could not be cloned."
                     }
                 }
             }
@@ -30,12 +36,12 @@ pipeline {
                     try {
                         def imageName = "myapp"
                         def imageTag = "v1.0"
-                        echo "docer build ................."
+                        echo "docker build ................."
                         bat "docker build -t ${imageName}:${imageTag} ."
                     } catch (Exception e) {
                         echo "Failed to build Docker image: ${e.message}"
                         currentBuild.result = 'FAILURE'
-                        error e
+                        error "Stopping pipeline because the Docker image build failed."
                     }
                 }
             }
