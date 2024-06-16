@@ -1,6 +1,15 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKERHUB_USERNAME = "enestars"
+        DOCKERHUB_PASSWORD = "nguyen123"
+        IMAGE_NAME = "nguyendeptrai"
+        IMAGE_TAG = "v1.0"
+        DOCKERHUB_REPO = "${DOCKERHUB_USERNAME}/${IMAGE_NAME}"
+        DOCKERHUB_TAG = "${DOCKERHUB_REPO}:${IMAGE_TAG}"
+    }
+
     stages {
         stage('Check Docker') {
             steps {
@@ -35,12 +44,9 @@ pipeline {
             steps {
                 script {
                     try {
-                        def imageName = "nguyendeptrai"
-                        def imageTag = "v1.0"
                         echo "Building Docker image..."
-                        // Change directory to where the Dockerfile is located
                         bat 'cd /d C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\demo-pipeline'
-                        bat "docker build -t ${imageName}:${imageTag} ."
+                        bat "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                     } catch (Exception e) {
                         echo "Failed to build Docker image: ${e.message}"
                         currentBuild.result = 'FAILURE'
@@ -54,21 +60,16 @@ pipeline {
             steps {
                 script {
                     try {
-                        def dockerHubUsername = "enestars"
-                        def dockerHubPassword = "nguyen123"
-                        def dockerHubRepo = "${dockerHubUsername}/${imageName}"
-                        def dockerHubTag = "${dockerHubRepo}:${imageTag}"
-                        
                         // Login to Docker Hub
-                        bat "docker login -u ${dockerHubUsername} -p ${dockerHubPassword}"
+                        bat "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
                         
                         // Tag the local image with Docker Hub repository
-                        bat "docker tag ${imageName}:${imageTag} ${dockerHubTag}"
+                        bat "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${DOCKERHUB_TAG}"
                         
                         // Push the image to Docker Hub
-                        bat "docker push ${dockerHubTag}"
+                        bat "docker push ${DOCKERHUB_TAG}"
                         
-                        echo "Docker image ${dockerHubTag} pushed to Docker Hub."
+                        echo "Docker image ${DOCKERHUB_TAG} pushed to Docker Hub."
                     } catch (Exception e) {
                         echo "Failed to push Docker image to Docker Hub: ${e.message}"
                         currentBuild.result = 'FAILURE'
