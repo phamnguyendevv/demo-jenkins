@@ -32,7 +32,7 @@ pipeline {
                     try {
                         git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/Enestar-28/demo-jenkins.git'
                     } catch (Exception e) {
-                        echo "Failed to clone repository: ${e.message}!"
+                        echo "Failed to clone repository: ${e.message}"
                         currentBuild.result = 'FAILURE'
                         error "Stopping pipeline because the repository could not be cloned."
                     }
@@ -49,7 +49,7 @@ pipeline {
                         bat "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                         
                     } catch (Exception e) {
-                        echo "Failed to build Docker image: ${e.message}"
+                        echo "Failed to build Docker image: ${e.message}!"
                         currentBuild.result = 'FAILURE'
                         error "Stopping pipeline because the Docker image build failed."
                     }
