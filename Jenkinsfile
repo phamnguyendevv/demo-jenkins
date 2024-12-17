@@ -47,7 +47,6 @@ pipeline {
                         echo "Building Docker image..."
                         bat 'cd /d C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\demo-pipeline'
                         bat "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
-                        
                     } catch (Exception e) {
                         echo "Failed to build Docker image: ${e.message}!"
                         currentBuild.result = 'FAILURE'
@@ -88,11 +87,5 @@ pipeline {
         always {
             echo "Pipeline completed with result: ${currentBuild.result}"
         }
-    }doc
+    }
 }
-
-
-// i am actively pursuing an opportunity to contribute my technical skills and knowledge to real-world projects 
-// seeking a dynmaic enviroment where i can gain hands-on experience , collaborate with exprerienced professionals, and 
-// further develop my problem-solving, commuinication, and teamwork skills. Eager to make meaningful contributions
-// to a company's success and advance my career in the field of software development.
